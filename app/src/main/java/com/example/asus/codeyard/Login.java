@@ -140,7 +140,7 @@ public class Login extends Fragment {
                         Intent intent = new Intent(getActivity(), HomeActivity.class);
                         startActivity(intent);
                     }else{
-                        Toast.makeText(getActivity(), "Login Failed! Check username or password", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "Login Failed!Invalid username or password", Toast.LENGTH_LONG).show();
                     }
                 }
             });

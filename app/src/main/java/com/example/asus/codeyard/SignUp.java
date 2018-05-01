@@ -1,9 +1,11 @@
 package com.example.asus.codeyard;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -13,6 +15,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 /**
@@ -32,6 +41,11 @@ public class SignUp extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private EditText email;
+    private EditText password2;
+    private EditText password;
+    private Button signup;
+    private FirebaseAuth mAuth;
 
     private OnFragmentInteractionListener mListener;
 
@@ -60,15 +74,16 @@ public class SignUp extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
       View v = inflater.inflate(R.layout.signup, container, false);
+        mAuth = FirebaseAuth.getInstance();
         Typeface tf  = Typeface.createFromAsset(getActivity().getAssets(),"fonts/NexaLight.otf");
         Typeface tf2 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/NexaBold.otf");
 
        TextView titlestart = v.findViewById(R.id.titlestart);
        TextView getstarted = v.findViewById(R.id.getstarted);
        Button signup = v.findViewById(R.id.signup);
-       EditText email = v.findViewById(R.id.email);
-       EditText password = v.findViewById(R.id.password);
-       EditText password2 = v.findViewById(R.id.password2);
+       email = v.findViewById(R.id.email);
+       password = v.findViewById(R.id.password);
+       password2 = v.findViewById(R.id.password2);
        TextView logg = v.findViewById(R.id.logg);
        TextView ahac = v.findViewById(R.id.ahac);
        Button googlelog = v.findViewById(R.id.googlelog);
@@ -91,6 +106,13 @@ public class SignUp extends Fragment {
               transaction.replace(R.id.content, new Login()).commit();
           }
       });
+
+      signup.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+              startSignIn();
+          }
+      });
       return  v;
 
     }
@@ -99,6 +121,37 @@ public class SignUp extends Fragment {
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
+        }
+    }
+
+    public void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+    }
+
+    private void startSignIn(){
+        String umail = email.getText().toString().trim();
+        String upass = password.getText().toString().trim();
+        String upass2 = password2.getText().toString().trim();
+
+        if(umail.isEmpty()){
+            email.setError("Enter a valid email or password");
+        }else if(upass.isEmpty()){
+            password.setError("Enter a password");
+        }else if(!upass.equals(upass2)){
+            password2.setError("Passwords do not match!");
+        }else{
+            mAuth.createUserWithEmailAndPassword(umail, upass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if(task.isSuccessful()){
+                        Intent intent = new Intent(getActivity(), HomeActivity.class);
+                        startActivity(intent);
+                    }else {
+                        Toast.makeText(getActivity(), "Failed to create account", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
         }
     }
 
