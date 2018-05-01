@@ -61,6 +61,7 @@ public class Login extends Fragment {
         EditText password = v.findViewById(R.id.password);
         TextView dhac = v.findViewById(R.id.dhac);
         TextView signup = v.findViewById(R.id.signup);
+        Button googlelog = v.findViewById(R.id.googlelog);
 
         welcome.setTypeface(tf2);
         sitcontinue.setTypeface(tf);
@@ -70,6 +71,7 @@ public class Login extends Fragment {
         password.setTypeface(tf);
         dhac.setTypeface(tf);
         signup.setTypeface(tf2);
+        googlelog.setTypeface(tf2);
 
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,6 +81,7 @@ public class Login extends Fragment {
                 transaction.replace(R.id.content, new SignIn()).commit();
             }
         });
+
 
         return v;
     }

@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">TechYard</string>
-    <string name="googlelog">LOG IN WITH GOOGLE</string>
-    <string name="githublog">LOG IN WITH GITHUB</string>
     <string name="mail">Username or Email</string>
     <string name="password">Enter password</string>
     <string name="passwordagain">Enter password again</string>
@@ -14,5 +12,6 @@
     <string name="fpassword">Forgot Password?</string>
     <string name="dhac">Don\'t have an account?</string>
     <string name="ahac">Already have an account?</string>
+    <string name="googlelog">Log In With Google</string>
     <string name="signup">Sign Up</string>
 </resources>
