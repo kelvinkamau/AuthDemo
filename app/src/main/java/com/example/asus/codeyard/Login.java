@@ -1,24 +1,38 @@
 package com.example.asus.codeyard;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+
 
 public class Login extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    private EditText email;
+    private EditText password;
+    private Button login;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -52,13 +66,13 @@ public class Login extends Fragment {
         View v = inflater.inflate(R.layout.login, container, false);
         Typeface tf  = Typeface.createFromAsset(getActivity().getAssets(),"fonts/NexaLight.otf");
         Typeface tf2 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/NexaBold.otf");
-
+        this.mAuth = FirebaseAuth.getInstance();
         TextView welcome = v.findViewById(R.id.welcomeback);
         TextView sitcontinue = v.findViewById(R.id.sitcontinue);
         TextView fpass = v.findViewById(R.id.fpass);
-        Button login = v.findViewById(R.id.login);
-        EditText email = v.findViewById(R.id.email);
-        EditText password = v.findViewById(R.id.password);
+        login = v.findViewById(R.id.login);
+        email = v.findViewById(R.id.email);
+        password = v.findViewById(R.id.password);
         TextView dhac = v.findViewById(R.id.dhac);
         TextView signup = v.findViewById(R.id.signup);
         Button googlelog = v.findViewById(R.id.googlelog);
@@ -73,19 +87,35 @@ public class Login extends Fragment {
         signup.setTypeface(tf2);
         googlelog.setTypeface(tf2);
 
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if(firebaseAuth.getCurrentUser() != null){
+                    startActivity(new Intent(getActivity(), HomeActivity.class));}
+            }
+        };
+
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.content, new SignIn()).commit();
+                transaction.replace(R.id.content, new SignUp()).commit();
+            }
+        });
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startSignIn();
             }
         });
 
-
         return v;
     }
-
+    public void onStart(){
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -93,13 +123,34 @@ public class Login extends Fragment {
         }
     }
 
+    private void startSignIn(){
+        String umail = email.getText().toString().trim();
+        String upass = password.getText().toString().trim();
+
+        if(TextUtils.isEmpty(umail) || TextUtils.isEmpty(upass)){
+           
+        }else{
+            mAuth.signInWithEmailAndPassword(umail, upass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if(task.isSuccessful()){
+                        Intent intent = new Intent(getActivity(), HomeActivity.class);
+                        startActivity(intent);
+                    }else{
+                        Toast.makeText(getActivity(), "LOGIN FAILED!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
+
+
+    }
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
-          //  throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -109,16 +160,6 @@ public class Login extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

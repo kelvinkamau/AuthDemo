@@ -14,18 +14,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link SignIn.OnFragmentInteractionListener} interface
+ * {@link SignUp.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link SignIn#newInstance} factory method to
+ * Use the {@link SignUp#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SignIn extends Fragment {
+public class SignUp extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -37,21 +35,12 @@ public class SignIn extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public SignIn() {
+    public SignUp() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SignIn.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SignIn newInstance(String param1, String param2) {
-        SignIn fragment = new SignIn();
+    public static SignUp newInstance(String param1, String param2) {
+        SignUp fragment = new SignUp();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -70,7 +59,7 @@ public class SignIn extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-      View v = inflater.inflate(R.layout.signin, container, false);
+      View v = inflater.inflate(R.layout.signup, container, false);
         Typeface tf  = Typeface.createFromAsset(getActivity().getAssets(),"fonts/NexaLight.otf");
         Typeface tf2 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/NexaBold.otf");
 
@@ -82,6 +71,7 @@ public class SignIn extends Fragment {
        EditText password2 = v.findViewById(R.id.password2);
        TextView logg = v.findViewById(R.id.logg);
        TextView ahac = v.findViewById(R.id.ahac);
+       Button googlelog = v.findViewById(R.id.googlelog);
 
       getstarted.setTypeface(tf);
       titlestart.setTypeface(tf2);
@@ -91,6 +81,7 @@ public class SignIn extends Fragment {
       signup.setTypeface(tf2);
       ahac.setTypeface(tf);
       logg.setTypeface(tf2);
+      googlelog.setTypeface(tf2);
 
       logg.setOnClickListener(new View.OnClickListener() {
           @Override
@@ -117,7 +108,6 @@ public class SignIn extends Fragment {
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
-//            throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
         }
     }
 

@@ -13,5 +13,6 @@
     <string name="dhac">Don\'t have an account?</string>
     <string name="ahac">Already have an account?</string>
     <string name="googlelog">Log In With Google</string>
+    <string name="googlesignup">Sign Up With Google</string>
     <string name="signup">Sign Up</string>
 </resources>
