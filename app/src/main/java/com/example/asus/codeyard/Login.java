@@ -127,9 +127,12 @@ public class Login extends Fragment {
         String umail = email.getText().toString().trim();
         String upass = password.getText().toString().trim();
 
-        if(TextUtils.isEmpty(umail) || TextUtils.isEmpty(upass)){
-           
-        }else{
+        if(umail.isEmpty()){
+            email.setError("Please provide a username or email");
+        }else if(upass.isEmpty()){
+            password.setError("Please provide a password");
+        }
+        else{
             mAuth.signInWithEmailAndPassword(umail, upass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -137,7 +140,7 @@ public class Login extends Fragment {
                         Intent intent = new Intent(getActivity(), HomeActivity.class);
                         startActivity(intent);
                     }else{
-                        Toast.makeText(getActivity(), "LOGIN FAILED!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Login Failed!", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
