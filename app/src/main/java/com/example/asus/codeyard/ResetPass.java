@@ -4,13 +4,22 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class ResetPass extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -70,6 +79,13 @@ public class ResetPass extends Fragment {
         recover.setTypeface(tf);
         email.setTypeface(tf);
         resbutton.setTypeface(tf2);
+
+        resbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendPasswordResetEmail();
+            }
+        });
         return  v;
     }
 
@@ -89,6 +105,23 @@ public class ResetPass extends Fragment {
         }
     }
 
+    private void sendPasswordResetEmail(){
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String emailAddress = "user@example.com";
+
+        auth.sendPasswordResetEmail(emailAddress)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getActivity(), "Email Sent!", Toast.LENGTH_SHORT).show();
+                            FragmentManager fragmentManager = getFragmentManager();
+                            FragmentTransaction transaction = fragmentManager.beginTransaction();
+                            transaction.replace(R.id.content, new Login()).commit();
+                        }
+                    }
+                });
+    }
     @Override
     public void onDetach() {
         super.onDetach();
