@@ -22,14 +22,13 @@ private Button logout;
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                exitConfirm();
 
             }
         });
 
     }
-    public void onBackPressed() {
-       // super.onBackPressed();
+    public void exitConfirm() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Log Out");
         builder.setMessage("Are you sure you want to log out?");
