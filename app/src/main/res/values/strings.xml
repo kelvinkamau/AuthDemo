@@ -19,5 +19,7 @@
     <string name="forgot">Reset password</string>
     <string name="recover">Enter email to reset</string>
     <string name="entermail">Enter email</string>
+    <string name="exit">Exit</string>
+    <string name="surety">Are you sure you want to exit?</string>
 
 </resources>

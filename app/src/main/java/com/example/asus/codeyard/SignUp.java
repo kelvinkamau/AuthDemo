@@ -141,6 +141,8 @@ public class SignUp extends Fragment {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     progressDialog.dismiss();
                     if(task.isSuccessful()){
+                        final FirebaseUser user = mAuth.getCurrentUser();
+                        user.sendEmailVerification();
                         Intent intent = new Intent(getActivity(), HomeActivity.class);
                         startActivity(intent);
                     } else if (task.getException() instanceof FirebaseAuthUserCollisionException) {
