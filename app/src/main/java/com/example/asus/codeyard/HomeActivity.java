@@ -36,15 +36,15 @@ private Button logout;
         builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                FirebaseAuth.getInstance().signOut();
                 finish();
+                startActivity(new Intent(HomeActivity.this, AuthActivity.class));
             }
         });
         builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-               /* FirebaseAuth.getInstance().signOut();
-                finish();
-                startActivity(new Intent(HomeActivity.this, AuthActivity.class));*/
+               /* */
             }
         });
         AlertDialog alert = builder.create();
