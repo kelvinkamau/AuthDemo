@@ -47,6 +47,7 @@ private Button logout;
                 startActivity(new Intent(HomeActivity.this, AuthActivity.class));*/
             }
         });
-        AlertDialog dialog = builder.show();
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 }
