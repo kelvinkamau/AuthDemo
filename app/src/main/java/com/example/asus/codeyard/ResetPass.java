@@ -68,7 +68,6 @@ public class ResetPass extends Fragment {
         View v = inflater.inflate(R.layout.resetpass, container, false);
         Typeface tf  = Typeface.createFromAsset(getActivity().getAssets(),"fonts/NexaLight.otf");
         Typeface tf2 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/NexaBold.otf");
-
         TextView forgot = v.findViewById(R.id.forgot);
         TextView recover = v.findViewById(R.id.recover);
         final EditText email = v.findViewById(R.id.email);
@@ -82,9 +81,9 @@ public class ResetPass extends Fragment {
         resbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseAuth auth = FirebaseAuth.getInstance();
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
                 String resemail = resbutton.getText().toString().trim();
-                auth.sendPasswordResetEmail(resemail)
+                mAuth.sendPasswordResetEmail(resemail)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
@@ -93,6 +92,8 @@ public class ResetPass extends Fragment {
                                     FragmentManager fragmentManager = getFragmentManager();
                                     FragmentTransaction transaction = fragmentManager.beginTransaction();
                                     transaction.replace(R.id.content, new Login()).commit();
+                                }else {
+                                    Toast.makeText(getActivity(), "Email not sent", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });

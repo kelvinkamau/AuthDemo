@@ -134,7 +134,6 @@ public class Login extends Fragment {
                 startSignIn();
             }
         });
-
         return v;
     }
 
