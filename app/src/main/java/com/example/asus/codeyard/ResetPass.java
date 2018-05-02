@@ -33,18 +33,9 @@ public class ResetPass extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     public ResetPass() {
-        // Required empty public constructor
+
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ResetPass.
-     */
-    // TODO: Rename and change types and number of parameters
     public static ResetPass newInstance(String param1, String param2) {
         ResetPass fragment = new ResetPass();
         Bundle args = new Bundle();
@@ -82,9 +73,8 @@ public class ResetPass extends Fragment {
             @Override
             public void onClick(View v) {
                 FirebaseAuth mAuth = FirebaseAuth.getInstance();
-                String resemail = resbutton.getText().toString().trim();
-                mAuth.sendPasswordResetEmail(resemail)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                String emailAddress = email.getText().toString();
+                mAuth.sendPasswordResetEmail(emailAddress).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
