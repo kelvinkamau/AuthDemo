@@ -10,7 +10,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +18,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
 
 
 public class Login extends Fragment {
@@ -36,9 +38,14 @@ public class Login extends Fragment {
     private FirebaseAuth mAuth;
     ProgressDialog progressDialog;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    // TODO: Rename and change types of parameters
+
     private String mParam1;
     private String mParam2;
+
+    //todo remove below
+    private static final String TAG = "SignInActivity";
+    private static final int RC_SIGN_IN = 9001;
+    private GoogleApiClient mGoogleApiClient;
 
     private OnFragmentInteractionListener mListener;
 
@@ -83,7 +90,7 @@ public class Login extends Fragment {
         password = v.findViewById(R.id.password);
         TextView dhac = v.findViewById(R.id.dhac);
         TextView signup = v.findViewById(R.id.signup);
-        Button googlelog = v.findViewById(R.id.googlelog);
+        SignInButton signInButton = v.findViewById(R.id.sign_in_button);
 
         welcome.setTypeface(tf2);
         sitcontinue.setTypeface(tf);
@@ -93,7 +100,6 @@ public class Login extends Fragment {
         password.setTypeface(tf);
         dhac.setTypeface(tf);
         signup.setTypeface(tf2);
-        googlelog.setTypeface(tf2);
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override

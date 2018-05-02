@@ -81,7 +81,6 @@ public class SignUp extends Fragment {
        password2 = v.findViewById(R.id.password2);
        TextView logg = v.findViewById(R.id.logg);
        TextView ahac = v.findViewById(R.id.ahac);
-       Button googlelog = v.findViewById(R.id.googlelog);
 
       getstarted.setTypeface(tf);
       titlestart.setTypeface(tf2);
@@ -91,7 +90,6 @@ public class SignUp extends Fragment {
       signup.setTypeface(tf2);
       ahac.setTypeface(tf);
       logg.setTypeface(tf2);
-      googlelog.setTypeface(tf2);
 
       logg.setOnClickListener(new View.OnClickListener() {
           @Override
