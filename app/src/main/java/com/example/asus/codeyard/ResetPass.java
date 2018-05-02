@@ -82,22 +82,20 @@ public class ResetPass extends Fragment {
         resbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Button Clicked", Toast.LENGTH_SHORT).show();
-                /*FirebaseAuth auth = FirebaseAuth.getInstance();
+                FirebaseAuth auth = FirebaseAuth.getInstance();
                 String resemail = resbutton.getText().toString().trim();
                 auth.sendPasswordResetEmail(resemail)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
-                                    resbutton.setText("");
                                     Toast.makeText(getActivity(), "Email Sent!", Toast.LENGTH_SHORT).show();
                                     FragmentManager fragmentManager = getFragmentManager();
                                     FragmentTransaction transaction = fragmentManager.beginTransaction();
                                     transaction.replace(R.id.content, new Login()).commit();
                                 }
                             }
-                        });*/
+                        });
             }
         });
         return  v;
