@@ -27,7 +27,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 
-
 public class Login extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
