@@ -1,5 +1,6 @@
 package com.example.asus.codeyard;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -22,6 +23,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public class Login extends Fragment {
@@ -32,6 +34,7 @@ public class Login extends Fragment {
     private EditText password;
     private Button login;
     private FirebaseAuth mAuth;
+    ProgressDialog progressDialog;
     private FirebaseAuth.AuthStateListener mAuthListener;
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -64,9 +67,14 @@ public class Login extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.login, container, false);
-        Typeface tf  = Typeface.createFromAsset(getActivity().getAssets(),"fonts/NexaLight.otf");
+        Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "fonts/NexaLight.otf");
         Typeface tf2 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/NexaBold.otf");
         this.mAuth = FirebaseAuth.getInstance();
+
+        this.progressDialog = new ProgressDialog(getActivity());
+        this.progressDialog.setMessage("Please wait...");
+        this.progressDialog.setProgressStyle(0);
+
         TextView welcome = v.findViewById(R.id.welcomeback);
         TextView sitcontinue = v.findViewById(R.id.sitcontinue);
         TextView fpass = v.findViewById(R.id.fpass);
@@ -90,13 +98,22 @@ public class Login extends Fragment {
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if(firebaseAuth.getCurrentUser() != null){
-                    Intent intent = new Intent(getActivity(), HomeActivity.class);
-                    startActivity(intent);
-}
+                if (firebaseAuth.getCurrentUser() != null) {
+                    startActivity(new Intent(getActivity(), HomeActivity.class));
+                    //TODO Using onAuthStateChanged On Fragments
+                    //TODO Start new activity from fragment
+                }
             }
         };
 
+        fpass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.content, new ResetPass()).commit();
+            }
+        });
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,10 +131,12 @@ public class Login extends Fragment {
 
         return v;
     }
-    public void onStart(){
+
+    public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
     }
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -125,23 +144,25 @@ public class Login extends Fragment {
         }
     }
 
-    private void startSignIn(){
+    private void startSignIn() {
         String umail = email.getText().toString().trim();
         String upass = password.getText().toString().trim();
 
-        if(umail.isEmpty()){
+        if (umail.isEmpty()) {
             email.setError("Please provide a username or email");
-        }else if(upass.isEmpty()){
+        } else if (upass.isEmpty()) {
             password.setError("Please provide a password");
-        }
-        else{
+        } else {
+            progressDialog.show();
             mAuth.signInWithEmailAndPassword(umail, upass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(task.isSuccessful()){
+                    progressDialog.dismiss();
+                    if (task.isSuccessful()) {
+                        FirebaseUser firebaseUser = mAuth.getCurrentUser();
                         Intent intent = new Intent(getActivity(), HomeActivity.class);
                         startActivity(intent);
-                    }else{
+                    } else {
                         Toast.makeText(getActivity(), "Login Failed!Invalid username or password", Toast.LENGTH_LONG).show();
                     }
                 }
@@ -150,6 +171,7 @@ public class Login extends Fragment {
 
 
     }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

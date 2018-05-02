@@ -20,9 +20,13 @@ private Button logout;
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
+                finish();
                 startActivity(new Intent(HomeActivity.this, AuthActivity.class));
             }
         });
 
+    }
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

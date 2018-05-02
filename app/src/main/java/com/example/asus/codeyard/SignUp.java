@@ -1,5 +1,6 @@
 package com.example.asus.codeyard;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -21,20 +22,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link SignUp.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link SignUp#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SignUp extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -44,13 +36,12 @@ public class SignUp extends Fragment {
     private EditText email;
     private EditText password2;
     private EditText password;
-    private Button signup;
     private FirebaseAuth mAuth;
+    private ProgressDialog progressDialog;
 
     private OnFragmentInteractionListener mListener;
 
     public SignUp() {
-        // Required empty public constructor
     }
 
     public static SignUp newInstance(String param1, String param2) {
@@ -77,6 +68,10 @@ public class SignUp extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         Typeface tf  = Typeface.createFromAsset(getActivity().getAssets(),"fonts/NexaLight.otf");
         Typeface tf2 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/NexaBold.otf");
+
+        this.progressDialog = new ProgressDialog(getActivity());
+        this.progressDialog.setMessage("Please wait...");
+        this.progressDialog.setProgressStyle(0);
 
        TextView titlestart = v.findViewById(R.id.titlestart);
        TextView getstarted = v.findViewById(R.id.getstarted);
@@ -117,7 +112,6 @@ public class SignUp extends Fragment {
 
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -130,7 +124,7 @@ public class SignUp extends Fragment {
     }
 
     private void startSignIn(){
-        String umail = email.getText().toString().trim();
+        final String umail = email.getText().toString().trim();
         String upass = password.getText().toString().trim();
         String upass2 = password2.getText().toString().trim();
 
@@ -141,20 +135,23 @@ public class SignUp extends Fragment {
         }else if(!upass.equals(upass2)){
             password2.setError("Passwords do not match!");
         }else{
+            progressDialog.show();
             mAuth.createUserWithEmailAndPassword(umail, upass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
+                    progressDialog.dismiss();
                     if(task.isSuccessful()){
                         Intent intent = new Intent(getActivity(), HomeActivity.class);
                         startActivity(intent);
-                    }else {
-                        Toast.makeText(getActivity(), "Failed to create account", Toast.LENGTH_LONG).show();
-                    }
+                    } else if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                        Toast.makeText(getActivity(), "Account with email/username: " + umail + " already exists!!", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getActivity(), "Account creation failed!", Toast.LENGTH_LONG).show();
+                }
                 }
             });
         }
     }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -170,16 +167,7 @@ public class SignUp extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

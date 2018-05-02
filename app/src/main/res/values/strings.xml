@@ -2,7 +2,7 @@
     <string name="app_name">TechYard</string>
     <string name="mail">Username or Email</string>
     <string name="password">Enter password</string>
-    <string name="passwordagain">Enter password again</string>
+    <string name="passwordagain">Re-enter password</string>
     <string name="login">LOGIN</string>
     <string name="login2">Log In</string>
     <string name="welcomeback">Welcome Back</string>
@@ -16,4 +16,8 @@
     <string name="googlesignup">Sign Up With Google</string>
     <string name="logout">Log Out</string>
     <string name="signup">Sign Up</string>
+    <string name="forgot">Reset password</string>
+    <string name="recover">Enter email to reset</string>
+    <string name="entermail">Enter email</string>
+
 </resources>
