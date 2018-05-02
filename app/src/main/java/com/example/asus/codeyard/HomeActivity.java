@@ -31,20 +31,20 @@ private Button logout;
     public void onBackPressed() {
        // super.onBackPressed();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.exit);
-        builder.setMessage(R.string.surety);
+        builder.setTitle("Log Out");
+        builder.setMessage("Are you sure you want to log out?");
         builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                finish();
             }
         });
         builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                FirebaseAuth.getInstance().signOut();
+               /* FirebaseAuth.getInstance().signOut();
                 finish();
-                startActivity(new Intent(HomeActivity.this, AuthActivity.class));
+                startActivity(new Intent(HomeActivity.this, AuthActivity.class));*/
             }
         });
         AlertDialog dialog = builder.show();
