@@ -1,14 +1,14 @@
 package com.example.asus.codeyard;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Toast;
 
 public class SplashActivity extends AppCompatActivity {
  static int SPLASH_TIMEOUT = 3000;
@@ -20,8 +20,8 @@ public class SplashActivity extends AppCompatActivity {
 
     }
     private void checkNet(){
-        ConnectivityManager conMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
 
+        ConnectivityManager conMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
         if ( conMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED
                 || conMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED ) {
             new Handler().postDelayed(new Runnable() {
@@ -35,7 +35,18 @@ public class SplashActivity extends AppCompatActivity {
         }
         else if ( conMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.DISCONNECTED
                 || conMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.DISCONNECTED) {
-            Toast.makeText(this, "YOU ARE OFFLINE", Toast.LENGTH_SHORT).show();
+
+            AlertDialog.Builder alertDialog= new AlertDialog.Builder(this);
+            alertDialog.setTitle("No Internet Connection");
+            alertDialog.setMessage("Check your internet connection");
+            alertDialog.setNeutralButton("OK", new DialogInterface.OnClickListener(){
+                public void onClick(DialogInterface dialog, int which){
+                    finish();
+                }
+            });
+            alertDialog.show();
+
         }
     }
-}
+    }
+
