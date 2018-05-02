@@ -30,6 +30,7 @@ public class ResetPass extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private static String email;
 
     private OnFragmentInteractionListener mListener;
 
@@ -72,8 +73,8 @@ public class ResetPass extends Fragment {
 
         TextView forgot = v.findViewById(R.id.forgot);
         TextView recover = v.findViewById(R.id.recover);
-        EditText email = v.findViewById(R.id.email);
-        Button resbutton = v.findViewById(R.id.resbutton);
+        final EditText email = v.findViewById(R.id.email);
+        final Button resbutton = v.findViewById(R.id.resbutton);
 
         forgot.setTypeface(tf2);
         recover.setTypeface(tf);
@@ -83,7 +84,20 @@ public class ResetPass extends Fragment {
         resbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendPasswordResetEmail();
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+                String resemail = resbutton.getText().toString().trim();
+                auth.sendPasswordResetEmail(resemail)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(getActivity(), "Email Sent!", Toast.LENGTH_SHORT).show();
+                                    FragmentManager fragmentManager = getFragmentManager();
+                                    FragmentTransaction transaction = fragmentManager.beginTransaction();
+                                    transaction.replace(R.id.content, new Login()).commit();
+                                }
+                            }
+                        });
             }
         });
         return  v;
@@ -105,23 +119,6 @@ public class ResetPass extends Fragment {
         }
     }
 
-    private void sendPasswordResetEmail(){
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        String emailAddress = "user@example.com";
-
-        auth.sendPasswordResetEmail(emailAddress)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(getActivity(), "Email Sent!", Toast.LENGTH_SHORT).show();
-                            FragmentManager fragmentManager = getFragmentManager();
-                            FragmentTransaction transaction = fragmentManager.beginTransaction();
-                            transaction.replace(R.id.content, new Login()).commit();
-                        }
-                    }
-                });
-    }
     @Override
     public void onDetach() {
         super.onDetach();
