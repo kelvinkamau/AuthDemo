@@ -173,8 +173,6 @@ public class Login extends Fragment {
                 }
             });
         }
-
-
     }
 
     @Override
