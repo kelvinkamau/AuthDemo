@@ -93,7 +93,7 @@ public class Login extends Fragment implements GoogleApiClient.OnConnectionFaile
                 .requestEmail()
                 .build();
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                .enableAutoManage(getActivity() , this /* OnConnectionFailedListener */)
+                .enableAutoManage(getActivity() , this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
