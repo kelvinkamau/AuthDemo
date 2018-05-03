@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -58,7 +59,7 @@ public class ResetPass extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.resetpass, container, false);
+       final View v = inflater.inflate(R.layout.resetpass, container, false);
         Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "fonts/NexaLight.otf");
         Typeface tf2 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/NexaBold.otf");
         TextView forgot = v.findViewById(R.id.forgot);
@@ -77,7 +78,7 @@ public class ResetPass extends Fragment {
 
         resbutton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 final String emailAddress = email.getText().toString();
                 if (emailAddress.isEmpty()) {
                     email.setError("Please enter your email");
@@ -95,7 +96,18 @@ public class ResetPass extends Fragment {
                                 transaction.replace(R.id.content, new Login()).commit();
                             } else {
                                 progressDialog.dismiss();
-                                Toast.makeText(getActivity(), "Email not sent", Toast.LENGTH_SHORT).show();
+                              //  Toast.makeText(getActivity(), "Email not sent", Toast.LENGTH_SHORT).show();
+
+                                Snackbar snackbar = Snackbar.make(v, "Email not sent", Snackbar.LENGTH_LONG)
+                                        .setAction("RETRY", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                Snackbar snackbar1 = Snackbar.make(v, "Message is restored!", Snackbar.LENGTH_SHORT);
+                                                snackbar1.show();
+                                            }
+                                        });
+
+                                snackbar.show();
                             }
                         }
                     });
