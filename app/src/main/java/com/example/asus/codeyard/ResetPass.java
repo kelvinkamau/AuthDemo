@@ -2,6 +2,7 @@ package com.example.asus.codeyard;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -98,11 +99,13 @@ public class ResetPass extends Fragment {
                                 progressDialog.dismiss();
                               //  Toast.makeText(getActivity(), "Email not sent", Toast.LENGTH_SHORT).show();
 
-                                Snackbar snackbar = Snackbar.make(v, "Email not sent", Snackbar.LENGTH_LONG)
+                                final Snackbar snackbar = Snackbar.make(v, "Email not sent", Snackbar.LENGTH_LONG)
+                                        .setActionTextColor(Color.WHITE)
                                         .setAction("RETRY", new View.OnClickListener() {
+                                            TextView tv = (TextView) (mSnackBar.getView()).findViewById(android.support.design.R.id.snackbar_text);
                                             @Override
                                             public void onClick(View view) {
-                                                Snackbar snackbar1 = Snackbar.make(v, "Message is restored!", Snackbar.LENGTH_SHORT);
+                                                Snackbar snackbar1 = Snackbar.make(v, "Please confirm email", Snackbar.LENGTH_SHORT);
                                                 snackbar1.show();
                                             }
                                         });
