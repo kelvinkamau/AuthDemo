@@ -61,7 +61,7 @@ public class ResetPass extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
        final View v = inflater.inflate(R.layout.resetpass, container, false);
-        Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "fonts/NexaLight.otf");
+        final Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "fonts/NexaLight.otf");
         Typeface tf2 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/NexaBold.otf");
         TextView forgot = v.findViewById(R.id.forgot);
         TextView recover = v.findViewById(R.id.recover);
@@ -102,8 +102,6 @@ public class ResetPass extends Fragment {
                                 final Snackbar snackbar = Snackbar.make(v, "Email not sent", Snackbar.LENGTH_LONG)
                                         .setActionTextColor(Color.WHITE)
                                         .setAction("RETRY", new View.OnClickListener() {
-                                            TextView tv = (TextView) snackbar.getView().findViewById(android.support.design.R.id.snackbar_text);
-                                           tv.setTypeface();
                                             @Override
                                             public void onClick(View view) {
                                                 Snackbar snackbar1 = Snackbar.make(v, "Please confirm email", Snackbar.LENGTH_SHORT);
