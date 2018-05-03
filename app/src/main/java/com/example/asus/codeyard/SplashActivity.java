@@ -38,9 +38,15 @@ public class SplashActivity extends AppCompatActivity {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
             alertDialog.setTitle("No Internet Connection");
             alertDialog.setMessage("Check your internet connection");
-            alertDialog.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+            alertDialog.setPositiveButton("EXIT", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     finish();
+                }
+            });
+            alertDialog.setNegativeButton("RETRY", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    checkNet();
                 }
             });
             alertDialog.show();

@@ -141,10 +141,11 @@ public class SignUp extends Fragment {
                     if(task.isSuccessful()){
                         final FirebaseUser user = mAuth.getCurrentUser();
                         user.sendEmailVerification();
+                        //TODO Check on email verification
                         Intent intent = new Intent(getActivity(), HomeActivity.class);
                         startActivity(intent);
                     } else if (task.getException() instanceof FirebaseAuthUserCollisionException) {
-                        Toast.makeText(getActivity(), "Account with email/username: " + umail + " already exists!!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "Account with email " + umail + " already exists!!", Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getActivity(), "Account creation failed!", Toast.LENGTH_LONG).show();
                 }

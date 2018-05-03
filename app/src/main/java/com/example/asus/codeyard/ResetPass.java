@@ -1,5 +1,6 @@
 package com.example.asus.codeyard;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -31,6 +32,7 @@ public class ResetPass extends Fragment {
     private String mParam1;
     private String mParam2;
     private OnFragmentInteractionListener mListener;
+    ProgressDialog progressDialog;
 
     public ResetPass() {
 
@@ -57,12 +59,16 @@ public class ResetPass extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.resetpass, container, false);
-        Typeface tf  = Typeface.createFromAsset(getActivity().getAssets(),"fonts/NexaLight.otf");
+        Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "fonts/NexaLight.otf");
         Typeface tf2 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/NexaBold.otf");
         TextView forgot = v.findViewById(R.id.forgot);
         TextView recover = v.findViewById(R.id.recover);
         final EditText email = v.findViewById(R.id.email);
         final Button resbutton = v.findViewById(R.id.resbutton);
+
+        this.progressDialog = new ProgressDialog(getActivity());
+        this.progressDialog.setMessage("Please wait...");
+        this.progressDialog.setProgressStyle(0);
 
         forgot.setTypeface(tf2);
         recover.setTypeface(tf);
@@ -72,24 +78,31 @@ public class ResetPass extends Fragment {
         resbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseAuth mAuth = FirebaseAuth.getInstance();
                 final String emailAddress = email.getText().toString();
-                mAuth.sendPasswordResetEmail(emailAddress).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(getActivity(), "Check " + emailAddress + " to reset password", Toast.LENGTH_LONG).show();
-                                    FragmentManager fragmentManager = getFragmentManager();
-                                    FragmentTransaction transaction = fragmentManager.beginTransaction();
-                                    transaction.replace(R.id.content, new Login()).commit();
-                                }else {
-                                    Toast.makeText(getActivity(), "Email not sent", Toast.LENGTH_SHORT).show();
-                                }
+                if (emailAddress.isEmpty()) {
+                    email.setError("Please enter your email");
+                } else {
+                    progressDialog.show();
+                    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                    mAuth.sendPasswordResetEmail(emailAddress).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                progressDialog.dismiss();
+                                Toast.makeText(getActivity(), "Check " + emailAddress + " to reset password", Toast.LENGTH_LONG).show();
+                                FragmentManager fragmentManager = getFragmentManager();
+                                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                                transaction.replace(R.id.content, new Login()).commit();
+                            } else {
+                                progressDialog.dismiss();
+                                Toast.makeText(getActivity(), "Email not sent", Toast.LENGTH_SHORT).show();
                             }
-                        });
+                        }
+                    });
+                }
             }
         });
-        return  v;
+        return v;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -113,6 +126,7 @@ public class ResetPass extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

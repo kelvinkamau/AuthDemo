@@ -44,7 +44,6 @@ public class HomeActivity extends AppCompatActivity {
         builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                /* */
             }
         });
         AlertDialog alert = builder.create();
