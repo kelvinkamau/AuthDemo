@@ -102,7 +102,8 @@ public class ResetPass extends Fragment {
                                 final Snackbar snackbar = Snackbar.make(v, "Email not sent", Snackbar.LENGTH_LONG)
                                         .setActionTextColor(Color.WHITE)
                                         .setAction("RETRY", new View.OnClickListener() {
-                                            TextView tv = (TextView) (mSnackBar.getView()).findViewById(android.support.design.R.id.snackbar_text);
+                                            TextView tv = (TextView) snackbar.getView().findViewById(android.support.design.R.id.snackbar_text);
+                                           tv.setTypeface();
                                             @Override
                                             public void onClick(View view) {
                                                 Snackbar snackbar1 = Snackbar.make(v, "Please confirm email", Snackbar.LENGTH_SHORT);
