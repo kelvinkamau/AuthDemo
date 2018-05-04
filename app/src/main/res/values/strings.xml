@@ -15,7 +15,6 @@
     <string name="googlelog">Log In With Google</string>
     <string name="googlesignup">Sign Up With Google</string>
     <string name="logout">Log Out</string>
-    <string name="logout2">Log Out 2</string>
     <string name="signup">Sign Up</string>
     <string name="forgot">Reset password</string>
     <string name="recover">Enter email to reset</string>
