@@ -138,7 +138,8 @@ public class SignUp extends Fragment {
                     progressDialog.dismiss();
                     if (task.isSuccessful()) {
                         //TODO This function is not working
-                        FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        mAuth.getCurrentUser().sendEmailVerification()
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
