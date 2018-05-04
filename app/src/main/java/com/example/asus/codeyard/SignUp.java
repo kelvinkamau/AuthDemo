@@ -64,49 +64,49 @@ public class SignUp extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-      View v = inflater.inflate(R.layout.signup, container, false);
+        View v = inflater.inflate(R.layout.signup, container, false);
         mAuth = FirebaseAuth.getInstance();
-        Typeface tf  = Typeface.createFromAsset(getActivity().getAssets(),"fonts/NexaLight.otf");
+        Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "fonts/NexaLight.otf");
         Typeface tf2 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/NexaBold.otf");
 
         this.progressDialog = new ProgressDialog(getActivity());
         this.progressDialog.setMessage("Please wait...");
         this.progressDialog.setProgressStyle(0);
 
-       TextView titlestart = v.findViewById(R.id.titlestart);
-       TextView getstarted = v.findViewById(R.id.getstarted);
-       Button signup = v.findViewById(R.id.signup);
-       email = v.findViewById(R.id.email);
-       password = v.findViewById(R.id.password);
-       password2 = v.findViewById(R.id.password2);
-       TextView logg = v.findViewById(R.id.logg);
-       TextView ahac = v.findViewById(R.id.ahac);
+        TextView titlestart = v.findViewById(R.id.titlestart);
+        TextView getstarted = v.findViewById(R.id.getstarted);
+        Button signup = v.findViewById(R.id.signup);
+        email = v.findViewById(R.id.email);
+        password = v.findViewById(R.id.password);
+        password2 = v.findViewById(R.id.password2);
+        TextView logg = v.findViewById(R.id.logg);
+        TextView ahac = v.findViewById(R.id.ahac);
 
-      getstarted.setTypeface(tf);
-      titlestart.setTypeface(tf2);
-      email.setTypeface(tf);
-      password.setTypeface(tf);
-      password2.setTypeface(tf);
-      signup.setTypeface(tf2);
-      ahac.setTypeface(tf);
-      logg.setTypeface(tf2);
+        getstarted.setTypeface(tf);
+        titlestart.setTypeface(tf2);
+        email.setTypeface(tf);
+        password.setTypeface(tf);
+        password2.setTypeface(tf);
+        signup.setTypeface(tf2);
+        ahac.setTypeface(tf);
+        logg.setTypeface(tf2);
 
-      logg.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-              FragmentManager fragmentManager = getFragmentManager();
-              FragmentTransaction transaction = fragmentManager.beginTransaction();
-              transaction.replace(R.id.content, new Login()).commit();
-          }
-      });
+        logg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.content, new Login()).commit();
+            }
+        });
 
-      signup.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-              startSignIn();
-          }
-      });
-      return  v;
+        signup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startSignIn();
+            }
+        });
+        return v;
 
     }
 
@@ -121,38 +121,48 @@ public class SignUp extends Fragment {
         FirebaseUser currentUser = mAuth.getCurrentUser();
     }
 
-    private void startSignIn(){
+    private void startSignIn() {
         final String umail = email.getText().toString().trim();
         String upass = password.getText().toString().trim();
         String upass2 = password2.getText().toString().trim();
 
-        if(umail.isEmpty()){
+        if (umail.isEmpty()) {
             email.setError("Enter a valid email or password");
-        }else if(upass.isEmpty()){
+        } else if (upass.isEmpty()) {
             password.setError("Enter a password");
-        }else if(!upass.equals(upass2)){
+        } else if (!upass.equals(upass2)) {
             password2.setError("Passwords do not match!");
-        }else{
+        } else {
             progressDialog.show();
             mAuth.createUserWithEmailAndPassword(umail, upass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     progressDialog.dismiss();
-                    if(task.isSuccessful()){
-                        final FirebaseUser user = mAuth.getCurrentUser();
-                        user.sendEmailVerification();
-                        //TODO Check on email verification
-                        Intent intent = new Intent(getActivity(), HomeActivity.class);
-                        startActivity(intent);
+                    if (task.isSuccessful()) {
+                        //TODO Check email verification on dashboard
+                        FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(getActivity(), "Check mail for verification", Toast.LENGTH_LONG).show();
+                                    Intent intent = new Intent(getActivity(), HomeActivity.class);
+                                    startActivity(intent);
+                                } else {
+                                    Toast.makeText(getActivity(), "Could not send email verification", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+
                     } else if (task.getException() instanceof FirebaseAuthUserCollisionException) {
                         Toast.makeText(getActivity(), "Account with email " + umail + " already exists!!", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getActivity(), "Account creation failed!", Toast.LENGTH_LONG).show();
-                }
+                    } else {
+                        Toast.makeText(getActivity(), "Account creation failed!", Toast.LENGTH_LONG).show();
+                    }
                 }
             });
         }
     }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

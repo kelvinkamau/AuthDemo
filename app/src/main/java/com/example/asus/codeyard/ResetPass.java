@@ -24,6 +24,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.w3c.dom.Text;
+
 public class ResetPass extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -60,13 +62,15 @@ public class ResetPass extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-       final View v = inflater.inflate(R.layout.resetpass, container, false);
+        final View v = inflater.inflate(R.layout.resetpass, container, false);
         final Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "fonts/NexaLight.otf");
         Typeface tf2 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/NexaBold.otf");
         TextView forgot = v.findViewById(R.id.forgot);
         TextView recover = v.findViewById(R.id.recover);
         final EditText email = v.findViewById(R.id.email);
         final Button resbutton = v.findViewById(R.id.resbutton);
+        TextView dhac = v.findViewById(R.id.dhac);
+        TextView signup = v.findViewById(R.id.signup);
 
         this.progressDialog = new ProgressDialog(getActivity());
         this.progressDialog.setMessage("Please wait...");
@@ -76,6 +80,17 @@ public class ResetPass extends Fragment {
         recover.setTypeface(tf);
         email.setTypeface(tf);
         resbutton.setTypeface(tf2);
+        dhac.setTypeface(tf);
+        signup.setTypeface(tf2);
+
+        signup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.content, new SignUp()).commit();
+            }
+        });
 
         resbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +103,7 @@ public class ResetPass extends Fragment {
                     FirebaseAuth mAuth = FirebaseAuth.getInstance();
                     mAuth.sendPasswordResetEmail(emailAddress).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
-                        public void onComplete(@NonNull Task<Void> task) {
+                        public void onComplete(@NonNull final Task<Void> task) {
                             if (task.isSuccessful()) {
                                 progressDialog.dismiss();
                                 Toast.makeText(getActivity(), "Check " + emailAddress + " to reset password", Toast.LENGTH_LONG).show();
@@ -97,17 +112,13 @@ public class ResetPass extends Fragment {
                                 transaction.replace(R.id.content, new Login()).commit();
                             } else {
                                 progressDialog.dismiss();
-                              //  Toast.makeText(getActivity(), "Email not sent", Toast.LENGTH_SHORT).show();
-
-                                final Snackbar snackbar = Snackbar.make(v, "Email not sent", Snackbar.LENGTH_LONG)
-                                        .setActionTextColor(Color.WHITE)
-                                        .setAction("RETRY", new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View view) {
-                                                Snackbar snackbar1 = Snackbar.make(v, "Please confirm email", Snackbar.LENGTH_SHORT);
-                                                snackbar1.show();
-                                            }
-                                        });
+                                final Snackbar snackbar = Snackbar.make(v, "Email not sent", Snackbar.LENGTH_LONG).setActionTextColor(Color.WHITE).setAction("RETRY", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Snackbar snackbar1 = Snackbar.make(v, "Please confirm email", Snackbar.LENGTH_SHORT);
+                                        snackbar1.show();
+                                    }
+                                });
 
                                 snackbar.show();
                             }
@@ -124,6 +135,10 @@ public class ResetPass extends Fragment {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+    }
+
+    public void onBackPressed() {
+
     }
 
     @Override

@@ -89,13 +89,8 @@ public class Login extends Fragment implements GoogleApiClient.OnConnectionFaile
         this.mAuth = FirebaseAuth.getInstance();
 
         //todo added below
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                .enableAutoManage(getActivity() , this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        mGoogleApiClient = new GoogleApiClient.Builder(getActivity()).enableAutoManage(getActivity(), this).addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();//TODO App crashes here
 
         this.progressDialog = new ProgressDialog(getActivity());
         this.progressDialog.setMessage("Please wait...");
@@ -177,26 +172,29 @@ public class Login extends Fragment implements GoogleApiClient.OnConnectionFaile
             opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
                 @Override
                 public void onResult(GoogleSignInResult googleSignInResult) {
-                   // hideProgressDialog();
                     handleSignInResult(googleSignInResult);
                 }
             });
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            handleSignInResult(result);
+        }
+    }
 
     private void handleSignInResult(GoogleSignInResult result) {
-       // Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
-            // Signed in successfully, show authenticated UI.
+            Toast.makeText(getActivity(), "Successful Login", Toast.LENGTH_LONG).show();
+            startActivity(new Intent(getActivity(), HomeActivity.class));
             GoogleSignInAccount acct = result.getSignInAccount();
-            Intent intent = new Intent(getActivity(), HomeActivity.class);
-            startActivity(intent);
-           // mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
-            //updateUI(true);
         } else {
-            // Signed out, show unauthenticated UI.
-            //updateUI(false);
+            //  Toast.makeText(getActivity(), "Failed to login", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -207,15 +205,14 @@ public class Login extends Fragment implements GoogleApiClient.OnConnectionFaile
     }
 
     private void revokeAccess() {
-        Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(Status status) {
-                        // [START_EXCLUDE]
-                        //updateUI(false);
-                        // [END_EXCLUDE]
-                    }
-                });
+        Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(new ResultCallback<Status>() {
+            @Override
+            public void onResult(Status status) {
+                // [START_EXCLUDE]
+                //updateUI(false);
+                // [END_EXCLUDE]
+            }
+        });
     }
     // [END revokeAccess]
 
@@ -224,6 +221,7 @@ public class Login extends Fragment implements GoogleApiClient.OnConnectionFaile
         // be available.
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
     }
+
     private void startSignIn() {
         String umail = email.getText().toString().trim();
         String upass = password.getText().toString().trim();
