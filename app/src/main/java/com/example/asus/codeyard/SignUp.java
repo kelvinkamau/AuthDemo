@@ -36,6 +36,7 @@ public class SignUp extends Fragment {
     private EditText password;
     private FirebaseAuth mAuth;
     private ProgressDialog progressDialog;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
     private OnFragmentInteractionListener mListener;
 
@@ -89,6 +90,16 @@ public class SignUp extends Fragment {
         ahac.setTypeface(tf);
         logg.setTypeface(tf2);
 
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if (firebaseAuth.getCurrentUser() != null) {
+                    startActivity(new Intent(getActivity(), HomeActivity.class));
+
+                }
+            }
+        };
+
         logg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,8 +149,7 @@ public class SignUp extends Fragment {
                     progressDialog.dismiss();
                     if (task.isSuccessful()) {
                         //TODO This function is not working
-                        mAuth.getCurrentUser().sendEmailVerification()
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1036191999482",
+    "firebase_url": "https://techyard-inc.firebaseio.com",
+    "project_id": "techyard-inc",
+    "storage_bucket": "techyard-inc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1036191999482:android:8ade85cddfb880da",
+        "android_client_info": {
+          "package_name": "com.example.asus.codeyard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1036191999482-hmqbk19n8kpjrk2aed8l9l04c2gnbccv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.asus.codeyard",
+            "certificate_hash": "3a9bf79ecc35a9f2f5095442a98c22cf17e761ad"
+          }
+        },
+        {
+          "client_id": "1036191999482-6dnhar9vkmsvfgcev1u4ntdauvgp2dn5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBY2m5KpqhOKvRMObI-SgaS6iueTiOgnW4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1036191999482-6dnhar9vkmsvfgcev1u4ntdauvgp2dn5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
