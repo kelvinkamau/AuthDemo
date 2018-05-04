@@ -29,8 +29,6 @@ public class SignUp extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     private EditText email;
@@ -139,6 +137,7 @@ public class SignUp extends Fragment {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     progressDialog.dismiss();
                     if (task.isSuccessful()) {
+                        FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification();
                         //TODO Check email verification on dashboard
                         FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override

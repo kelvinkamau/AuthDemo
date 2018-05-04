@@ -122,7 +122,8 @@ public class Login extends Fragment implements GoogleApiClient.OnConnectionFaile
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if (firebaseAuth.getCurrentUser() != null) {
-                    startActivity(new Intent(getActivity(), HomeActivity.class));
+                //TODO APP CRASHES HERE
+             startActivity(new Intent(getActivity(), HomeActivity.class));
 
                 }
             }
