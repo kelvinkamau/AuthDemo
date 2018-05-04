@@ -12,8 +12,6 @@
     <string name="fpassword">Forgot Password?</string>
     <string name="dhac">Don\'t have an account?</string>
     <string name="ahac">Already have an account?</string>
-    <string name="googlelog">Log In With Google</string>
-    <string name="googlesignup">Sign Up With Google</string>
     <string name="logout">Log Out</string>
     <string name="signup">Sign Up</string>
     <string name="forgot">Reset password</string>
