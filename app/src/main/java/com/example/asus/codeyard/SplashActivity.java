@@ -38,7 +38,7 @@ public class SplashActivity extends AppCompatActivity {
 
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
             alertDialog.setTitle("No Internet Connection");
-            alertDialog.setMessage("Check your internet connection");
+            alertDialog.setMessage("You cannot use this app without an internet connection.");
             alertDialog.setPositiveButton("EXIT", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     finish();
