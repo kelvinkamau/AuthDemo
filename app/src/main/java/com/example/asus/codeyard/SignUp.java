@@ -137,7 +137,6 @@ public class SignUp extends Fragment {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     progressDialog.dismiss();
                     if (task.isSuccessful()) {
-                        FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification();
                         //TODO Check email verification on dashboard
                         FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
