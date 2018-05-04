@@ -1,6 +1,5 @@
 package com.example.asus.codeyard;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -34,7 +33,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 
 public class Login extends Fragment implements GoogleApiClient.OnConnectionFailedListener {
@@ -89,10 +87,7 @@ public class Login extends Fragment implements GoogleApiClient.OnConnectionFaile
 
         //todo added below
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
-        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                .enableAutoManage(getActivity(), this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();//TODO App crashes here
+        mGoogleApiClient = new GoogleApiClient.Builder(getActivity()).enableAutoManage(getActivity(), this).addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();//TODO App crashes here
 
         this.progressDialog = new ProgressDialog(getActivity());
         this.progressDialog.setMessage("Please wait...");
@@ -216,8 +211,6 @@ public class Login extends Fragment implements GoogleApiClient.OnConnectionFaile
     // [END revokeAccess]
 
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        // An unresolvable error has occurred and Google APIs (including Sign-In) will not
-        // be available.
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
     }
 
