@@ -1,5 +1,6 @@
 package com.example.asus.codeyard;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -46,7 +47,7 @@ public class Login extends Fragment implements GoogleApiClient.OnConnectionFaile
     private FirebaseAuth mAuth;
     ProgressDialog progressDialog;
     private FirebaseAuth.AuthStateListener mAuthListener;
-
+    public static AuthActivity activity;
     //todo added 5 below
     private static final String TAG = "Login";
     private static final int RC_SIGN_IN = 9001;
@@ -123,7 +124,7 @@ public class Login extends Fragment implements GoogleApiClient.OnConnectionFaile
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if (firebaseAuth.getCurrentUser() != null) {
                 //TODO APP CRASHES HERE
-             startActivity(new Intent(getActivity(), HomeActivity.class));
+             startActivity(new Intent(activity, HomeActivity.class));
 
                 }
             }
@@ -254,9 +255,10 @@ public class Login extends Fragment implements GoogleApiClient.OnConnectionFaile
 
     }
 
-    @Override
-    public void onAttach(Context context) {
+   // @Override
+    public void onAttach(Activity activity, Context context) {
         super.onAttach(context);
+        this.activity = activity;
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
