@@ -47,13 +47,11 @@ public class Login extends Fragment implements GoogleApiClient.OnConnectionFaile
     private FirebaseAuth mAuth;
     ProgressDialog progressDialog;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    public static AuthActivity activity;
+
     //todo added 5 below
     private static final String TAG = "Login";
     private static final int RC_SIGN_IN = 9001;
     private GoogleApiClient mGoogleApiClient;
-    private TextView mStatusTextView;
-    private ProgressDialog mProgressDialog;
 
     private String mParam1;
     private String mParam2;
@@ -91,10 +89,7 @@ public class Login extends Fragment implements GoogleApiClient.OnConnectionFaile
 
         //todo added below
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
-        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                .enableAutoManage(getActivity(), this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();//TODO App crashes here
+        mGoogleApiClient = new GoogleApiClient.Builder(getActivity()).enableAutoManage(getActivity(), this).addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();//TODO App crashes here
 
         this.progressDialog = new ProgressDialog(getActivity());
         this.progressDialog.setMessage("Please wait...");
@@ -123,8 +118,7 @@ public class Login extends Fragment implements GoogleApiClient.OnConnectionFaile
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if (firebaseAuth.getCurrentUser() != null) {
-                //TODO APP CRASHES HERE
-             startActivity(new Intent(activity, HomeActivity.class));
+                    startActivity(new Intent(getActivity(), HomeActivity.class));
 
                 }
             }
@@ -255,10 +249,9 @@ public class Login extends Fragment implements GoogleApiClient.OnConnectionFaile
 
     }
 
-   // @Override
-    public void onAttach(Activity activity, Context context) {
+    @Override
+    public void onAttach(Context context) {
         super.onAttach(context);
-        this.activity = activity;
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
